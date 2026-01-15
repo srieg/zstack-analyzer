@@ -9,6 +9,19 @@
 ╚══════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
 ```
 
+> **⚠️ WORK IN PROGRESS**
+>
+> This project is in active development and **not yet production-ready**. The codebase was generated as a proof-of-concept and requires:
+>
+> - **Testing** - Unit tests, integration tests, and real-world validation with actual microscopy data
+> - **Security hardening** - Authentication/authorization not yet implemented (see [SECURITY_AUDIT_REPORT.md](SECURITY_AUDIT_REPORT.md))
+> - **Performance tuning** - GPU kernels need optimization for different hardware
+> - **Documentation** - API docs and tutorials are incomplete
+>
+> **Use at your own risk.** Contributions and feedback welcome!
+
+---
+
 # **Microscopy Analysis That Doesn't Suck**
 
 **GPU-accelerated Z-stack analysis with human validation. Open source. Actually fast.**
