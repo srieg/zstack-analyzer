@@ -331,11 +331,13 @@ def otsu_threshold(
     # Iterate through histogram to find optimal threshold
     for i in range(num_bins):
         weight_background = weight_background + histogram[i]
-        if to_numpy(weight_background)[0] == 0:
+        weight_bg_val = to_numpy(weight_background).item() if to_numpy(weight_background).ndim > 0 else float(to_numpy(weight_background))
+        if weight_bg_val == 0:
             continue
 
         weight_foreground = total - weight_background
-        if to_numpy(weight_foreground)[0] == 0:
+        weight_fg_val = to_numpy(weight_foreground).item() if to_numpy(weight_foreground).ndim > 0 else float(to_numpy(weight_foreground))
+        if weight_fg_val == 0:
             break
 
         sum_background = sum_background + i * histogram[i]
@@ -345,7 +347,9 @@ def otsu_threshold(
         # Between-class variance
         variance_between = weight_background * weight_foreground * (mean_background - mean_foreground) ** 2
 
-        if to_numpy(variance_between > current_max)[0]:
+        var_between_val = to_numpy(variance_between > current_max)
+        is_better = var_between_val.item() if var_between_val.ndim > 0 else bool(var_between_val)
+        if is_better:
             current_max = variance_between
             threshold_idx = Tensor([i], dtype=dtypes.int32)
 
@@ -353,8 +357,17 @@ def otsu_threshold(
         progress_callback(0.8)
 
     # Convert threshold back to original scale
-    threshold_normalized = to_numpy(threshold_idx)[0] / (num_bins - 1)
-    threshold_value = threshold_normalized * (to_numpy(vol_max - vol_min)[0]) + to_numpy(vol_min)[0]
+    threshold_idx_val = to_numpy(threshold_idx)
+    threshold_idx_scalar = threshold_idx_val.item() if threshold_idx_val.ndim > 0 else float(threshold_idx_val)
+    threshold_normalized = threshold_idx_scalar / (num_bins - 1)
+
+    vol_range = to_numpy(vol_max - vol_min)
+    vol_range_scalar = vol_range.item() if vol_range.ndim > 0 else float(vol_range)
+
+    vol_min_val = to_numpy(vol_min)
+    vol_min_scalar = vol_min_val.item() if vol_min_val.ndim > 0 else float(vol_min_val)
+
+    threshold_value = threshold_normalized * vol_range_scalar + vol_min_scalar
 
     # Apply threshold
     binary_mask = (vol_tensor >= threshold_value).cast(dtypes.float32)
