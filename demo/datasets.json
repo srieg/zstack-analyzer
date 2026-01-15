@@ -1,0 +1,222 @@
+{
+  "datasets": [
+    {
+      "id": "cell-division",
+      "name": "Cell Division - Mitotic Cells",
+      "description": "Mammalian cells undergoing mitosis with clearly visible chromosomes and spindle fibers. Demonstrates nuclear segmentation and structural analysis.",
+      "difficulty": "intermediate",
+      "categories": ["nuclei", "filaments", "cell-biology"],
+      "shape": [60, 512, 512],
+      "channels": 2,
+      "channel_names": ["DNA (DAPI)", "Tubulin (FITC)"],
+      "snr": "high",
+      "expected_results": {
+        "nuclei_count": "15-20 cells",
+        "structures": "Condensed chromosomes, mitotic spindles",
+        "features": "High contrast, clear boundaries"
+      },
+      "generation_params": {
+        "nuclei": {
+          "num_nuclei": 18,
+          "radius_range": [6.0, 12.0],
+          "intensity_range": [10000, 25000]
+        },
+        "filaments": {
+          "num_filaments": 20,
+          "length_range": [20.0, 60.0],
+          "thickness_range": [1.0, 2.0],
+          "intensity_range": [5000, 15000]
+        },
+        "noise": {
+          "gaussian_sigma": 300,
+          "background_mean": 400
+        }
+      },
+      "showcase_features": [
+        "3D segmentation",
+        "Multi-channel analysis",
+        "Volume rendering"
+      ]
+    },
+    {
+      "id": "neuron-network",
+      "name": "Neuron Network - Branching Structures",
+      "description": "Complex neuronal network with extensive dendritic branching and synaptic puncta. Perfect for demonstrating filament tracing and connectivity analysis.",
+      "difficulty": "advanced",
+      "categories": ["neurons", "filaments", "puncta", "neuroscience"],
+      "shape": [80, 512, 512],
+      "channels": 2,
+      "channel_names": ["MAP2 (Dendrites)", "Synapsin (Synapses)"],
+      "snr": "medium",
+      "expected_results": {
+        "filament_length": "5000+ pixels total",
+        "puncta_count": "150-200 synapses",
+        "features": "Complex branching patterns, synaptic colocalization"
+      },
+      "generation_params": {
+        "filaments": {
+          "num_filaments": 30,
+          "length_range": [50.0, 120.0],
+          "thickness_range": [1.5, 2.5],
+          "intensity_range": [8000, 18000]
+        },
+        "puncta": {
+          "num_puncta": 180,
+          "radius_range": [1.5, 2.5],
+          "intensity_range": [10000, 25000]
+        },
+        "noise": {
+          "gaussian_sigma": 500,
+          "background_mean": 600
+        }
+      },
+      "showcase_features": [
+        "Filament tracing",
+        "Puncta detection",
+        "Colocalization analysis",
+        "Network visualization"
+      ]
+    },
+    {
+      "id": "colocalization-study",
+      "name": "Colocalization Study - Protein Interactions",
+      "description": "Two-channel dataset with varying degrees of colocalization. Ideal for demonstrating quantitative colocalization metrics (Pearson's, Manders', etc.).",
+      "difficulty": "beginner",
+      "categories": ["colocalization", "quantitative-analysis"],
+      "shape": [50, 512, 512],
+      "channels": 2,
+      "channel_names": ["Protein A (GFP)", "Protein B (mCherry)"],
+      "snr": "high",
+      "overlap_fraction": 0.65,
+      "expected_results": {
+        "pearsons_r": "0.6-0.7",
+        "manders_m1": "0.65-0.75",
+        "manders_m2": "0.65-0.75",
+        "features": "Clear colocalization patterns, quantifiable overlap"
+      },
+      "generation_params": {
+        "colocalization": true,
+        "overlap_fraction": 0.65,
+        "noise": {
+          "gaussian_sigma": 250,
+          "background_mean": 350
+        }
+      },
+      "showcase_features": [
+        "Colocalization metrics",
+        "Scatter plots",
+        "Overlap visualization",
+        "Statistical analysis"
+      ]
+    },
+    {
+      "id": "low-snr-challenge",
+      "name": "Low SNR Challenge - Noisy Data",
+      "description": "Heavily degraded image with low signal-to-noise ratio. Demonstrates the power of denoising algorithms and advanced segmentation techniques.",
+      "difficulty": "expert",
+      "categories": ["denoising", "challenging-data"],
+      "shape": [60, 512, 512],
+      "channels": 1,
+      "channel_names": ["Alexa 488"],
+      "snr": "low",
+      "expected_results": {
+        "improvement": "3-5x SNR improvement after denoising",
+        "structures": "Recoverable nuclei and background structures",
+        "features": "Tests robustness of analysis pipeline"
+      },
+      "generation_params": {
+        "nuclei": {
+          "num_nuclei": 12,
+          "radius_range": [7.0, 13.0],
+          "intensity_range": [3000, 8000]
+        },
+        "puncta": {
+          "num_puncta": 60,
+          "radius_range": [1.0, 2.5],
+          "intensity_range": [2000, 6000]
+        },
+        "noise": {
+          "gaussian_sigma": 1200,
+          "background_mean": 800,
+          "poisson_scaling": 0.05
+        }
+      },
+      "showcase_features": [
+        "Denoising algorithms",
+        "Adaptive segmentation",
+        "Quality metrics",
+        "Before/after comparison"
+      ]
+    },
+    {
+      "id": "large-volume",
+      "name": "Large Volume - Tissue Section",
+      "description": "Large-scale tissue imaging with hundreds of cells. Demonstrates scalability and performance of the analysis pipeline.",
+      "difficulty": "advanced",
+      "categories": ["large-scale", "performance", "tissue"],
+      "shape": [200, 512, 512],
+      "channels": 1,
+      "channel_names": ["DAPI"],
+      "snr": "high",
+      "expected_results": {
+        "nuclei_count": "100+ cells",
+        "volume": "26 million voxels",
+        "features": "Fast processing, memory efficiency"
+      },
+      "generation_params": {
+        "nuclei": {
+          "num_nuclei": 120,
+          "radius_range": [5.0, 12.0],
+          "intensity_range": [8000, 22000]
+        },
+        "noise": {
+          "gaussian_sigma": 350,
+          "background_mean": 450
+        }
+      },
+      "showcase_features": [
+        "GPU acceleration",
+        "Memory optimization",
+        "Batch processing",
+        "Performance metrics"
+      ]
+    },
+    {
+      "id": "time-series",
+      "name": "Time Series - Cell Migration",
+      "description": "4D dataset capturing cell migration over time. Shows temporal analysis capabilities and motion tracking.",
+      "difficulty": "advanced",
+      "categories": ["4d", "time-series", "tracking", "dynamics"],
+      "shape": [40, 384, 384],
+      "channels": 1,
+      "channel_names": ["GFP"],
+      "timepoints": 10,
+      "snr": "medium",
+      "expected_results": {
+        "cells_tracked": "5 cells",
+        "migration_speed": "~5 pixels/timepoint",
+        "features": "Continuous tracking, trajectory visualization"
+      },
+      "generation_params": {
+        "time_series": true,
+        "num_timepoints": 10,
+        "movement_speed": 5.0,
+        "noise": {
+          "gaussian_sigma": 300,
+          "background_mean": 400
+        }
+      },
+      "showcase_features": [
+        "4D visualization",
+        "Cell tracking",
+        "Trajectory analysis",
+        "Temporal dynamics"
+      ]
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "generator": "demo/generator.py",
+    "last_updated": "2026-01-14"
+  }
+}

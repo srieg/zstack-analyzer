@@ -1,0 +1,152 @@
+# Z-Stack Analyzer Automation Configuration
+# This file demonstrates how to configure automated analysis workflows
+
+# Analysis settings
+analysis:
+  default_algorithm: segmentation_3d
+  threshold: 0.5
+  min_object_size: 100
+  output_format: json
+  parallel_workers: 8
+
+# GPU settings
+gpu:
+  enabled: true
+  device: cuda:0  # Options: cuda:0, cuda:1, metal, null (auto-detect)
+  memory_limit_mb: 8192
+  fallback_to_cpu: true
+
+# Output settings
+output:
+  default_directory: ./results
+  compression: lzw  # Options: none, lzw, zip, jpeg
+  quality: 95
+  save_metadata: true
+  verbose: true
+
+# Server settings (for web API)
+server:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+  log_level: info
+
+# Workflow Definitions
+# These are example workflows that can be automated
+
+workflows:
+  # High-throughput screening workflow
+  hts_screening:
+    name: "High-Throughput Screening"
+    description: "Automated analysis for drug screening experiments"
+    steps:
+      - name: "Quality Control"
+        algorithm: intensity_analysis
+        parameters:
+          roi_coords: null
+      - name: "Cell Segmentation"
+        algorithm: segmentation_3d
+        parameters:
+          threshold: 0.6
+          min_object_size: 150
+      - name: "Colocalization Analysis"
+        algorithm: colocalization
+        parameters:
+          channel1: 0
+          channel2: 1
+    output:
+      format: csv
+      include_images: true
+      thumbnail_size: 256
+
+  # Neuroscience workflow
+  neuroscience:
+    name: "Neuroscience Analysis"
+    description: "Specialized pipeline for neural imaging"
+    steps:
+      - name: "Deconvolution"
+        algorithm: deconvolution
+        parameters:
+          iterations: 15
+          psf_type: gaussian
+      - name: "Neuron Segmentation"
+        algorithm: segmentation_3d
+        parameters:
+          threshold: 0.4
+          min_object_size: 50
+      - name: "Intensity Profiling"
+        algorithm: intensity_analysis
+        parameters:
+          roi_coords: null
+    output:
+      format: json
+      include_images: true
+      thumbnail_size: 512
+
+  # Quick validation workflow
+  quick_validation:
+    name: "Quick Validation"
+    description: "Fast quality check for incoming data"
+    steps:
+      - name: "Basic Analysis"
+        algorithm: intensity_analysis
+        parameters: {}
+    output:
+      format: json
+      include_images: false
+
+# Batch Processing Configuration
+batch:
+  # Auto-detect new files in watch directory
+  watch_directory: ./data/inbox
+  # Move processed files to archive
+  archive_directory: ./data/archive
+  # File patterns to process
+  file_patterns:
+    - "*.tif"
+    - "*.tiff"
+    - "*.czi"
+  # Processing schedule
+  schedule:
+    enabled: false  # Set to true to enable scheduled processing
+    cron: "0 */6 * * *"  # Run every 6 hours
+    max_batch_size: 100
+
+# Notifications
+notifications:
+  enabled: false
+  email:
+    smtp_server: smtp.example.com
+    smtp_port: 587
+    from_address: zstack@example.com
+    to_addresses:
+      - researcher@example.com
+  slack:
+    webhook_url: null
+  discord:
+    webhook_url: null
+
+# Quality Control Thresholds
+quality_control:
+  min_width: 256
+  min_height: 256
+  min_depth: 5
+  min_channels: 1
+  max_file_size_mb: 5000
+  allowed_formats:
+    - tif
+    - tiff
+    - czi
+    - nd2
+    - lsm
+
+# Advanced Settings
+advanced:
+  cache_enabled: true
+  cache_directory: ./cache
+  max_cache_size_gb: 50
+  temp_directory: ./tmp
+  cleanup_temp_files: true
+  log_directory: ./logs
+  max_log_size_mb: 100
+  max_log_files: 10
